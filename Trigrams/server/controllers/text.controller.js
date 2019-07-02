@@ -68,16 +68,20 @@ const generateTrigramText = (req, res) => {
 //Used to generate the next word in a string given trigram possibilities
 const generateNextWord = (str, trigrams) => {
     const words = str.split(" ").slice(-2, str.length - 1);
-    const firstWord = words[0].replace(/\s/g, "");
-    const secondWord = words[1].replace(/\s/g, "");
+    //remove whitespace
+    const firstWord = words[0] ? words[0].replace(/\s/g, "") : undefined;
+    const secondWord = words[1] ? words[1].replace(/\s/g, "") : undefined
     const key = firstWord + " " + secondWord;
-    const item = trigrams.find(function (item) {
-        return item.key.toLowerCase() == key.toLowerCase()
-    });
-    if (item && item.nextWords.length != 0) {
-        //Choose a random word out of the possible words
-        var randomIndex = Math.floor(Math.random() * item.nextWords.length)
-        return item.nextWords[randomIndex]
+
+    if(firstWord && secondWord){
+        const item = trigrams.find(function (item) {
+            return item.key.toLowerCase() == key.toLowerCase()
+        });
+        if (item && item.nextWords.length != 0) {
+            //Choose a random word out of the possible words
+            var randomIndex = Math.floor(Math.random() * item.nextWords.length)
+            return item.nextWords[randomIndex]
+        }
     }
 }
 
